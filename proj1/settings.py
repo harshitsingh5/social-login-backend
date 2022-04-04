@@ -78,6 +78,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -112,11 +113,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'proj1.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = ['*']
+
 # CORS WHITELIST
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
+    "https://localhost:3000",
     "https://relaxed-curie-e9a516.netlify.app",
-    "http://127.0.0.1:8080"
+    "http://127.0.0.1:3000",
+    "https://127.0.0.1:3000"
 ]
 
 
@@ -200,3 +206,4 @@ SOCIAL_AUTH_FACEBOOK_SECRET	=	''	# Facebook App Secret
 
 
 sample_pass='@#$%^&*&^%!@#$)(*$%^&@#$%*&^#$%^)'
+
