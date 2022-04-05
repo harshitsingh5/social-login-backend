@@ -12,5 +12,6 @@ urlpatterns = [
      # re_path('rest-auth/', include('rest_auth.urls'))
 
      path('facebook', FacebookSocialAuthView.as_view()),
+     path('linkedin', LinkedinSocialAuthView.as_view()),
 
 ]
