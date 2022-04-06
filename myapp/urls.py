@@ -13,5 +13,5 @@ urlpatterns = [
 
      path('facebook', FacebookSocialAuthView.as_view()),
      path('linkedin', LinkedinSocialAuthView.as_view()),
-
+     path('google', GoogleSocialAuthView.as_view()),
 ]

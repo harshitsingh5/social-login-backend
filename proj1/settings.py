@@ -54,19 +54,20 @@ INSTALLED_APPS = [
     'corsheaders',
     
     #for social login
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.linkedin_oauth2',
     # 'rest_auth.registration',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.facebook',
-    # 'allauth.socialaccount.providers.google',
-    # 'allauth.socialaccount.providers.linkedin_oauth2',
 ]
 
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
 
     # 'social.backends.facebook.FacebookOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
@@ -196,9 +197,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-LOGIN_REDIRECT_URL = '/'
+# LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+ACCOUNT_EMAIL_VERIFICATION = "none"
+LOGIN_REDIRECT_URL = "home"
+ACCOUNT_LOGOUT_ON_GET = True
 
 
 SOCIAL_AUTH_FACEBOOK_KEY	=	''	# Facebook App	ID
