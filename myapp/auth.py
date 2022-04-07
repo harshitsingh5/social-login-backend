@@ -7,6 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 import facebook
 from google.auth.transport import requests
 from google.oauth2 import id_token
+import requests
 
 
 class Facebook:
@@ -28,6 +29,31 @@ class Google:
                 return idinfo
         except:
             return "The token is either invalid or has expired"
+
+class Linkedin:
+    @staticmethod
+    def validate(code):
+        # print('inside validate')
+        data = {
+            'grant_type':'authorization_code',
+            'code':code,
+            'client_id':'78xx67hewmxxlr',
+            'client_secret':'X6Ju6nl6q5a9UF05',
+            'redirect_uri':'https://localhost:3000/',
+        }
+        lnkd_verify_url = 'https://www.linkedin.com/oauth/v2/accessToken'
+        r = requests.post(lnkd_verify_url, data=data)
+        jsonified = r.json()
+        access_token = jsonified['access_token']
+
+        # fetching the profile data
+        prof_url = 'https://api.linkedin.com/v2/me'
+        # token_data = '\'TOK:' + access_token + "\'"
+        params = {'oauth2_access_token': access_token}
+        prof_data = requests.get(prof_url, params=params)
+        # print(prof_data.json())
+        return r.json(), prof_data.json()
+
 
 def generate_username(name):
     username = "".join(name.split(' ')).lower()

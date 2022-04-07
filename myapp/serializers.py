@@ -37,7 +37,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         try:
             user_data['sub']
         except:
-            raise serializers.ValidationError('ve: The token is invalid or expired. Please login again.')
+            raise serializers.ValidationError('The token is invalid or expired. Please login again.')
 
         # if user_data['aud'] != os.environ.get('GOOGLE_CLIENT_ID'):
         if user_data['aud'] != GOOGLE_CLIENT_ID:
@@ -48,16 +48,20 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         name = user_data['name']
         provider = 'google'
 
-        return register_social_user(
-            provider=provider, user_id=user_id, email=email, name=name)
+        return register_social_user(provider=provider, user_id=user_id, email=email, name=name)
 
 class LinkedinSocialAuthSerializer(serializers.Serializer):
     auth_token = serializers.CharField()
 
     def validate_auth_token(self, auth_token):
-        return register_social_user(
-                provider='provider',
-                user_id='user_id',
-                email='email',
-                name='name'
-            )
+        access_token_data, profile_data = Linkedin.validate(auth_token)
+        firstname = profile_data['firstName']['localized']['en_US']
+        lastname = profile_data['lastName']['localized']['en_US']
+        name = firstname + ' ' + lastname
+        user_id = profile_data['id']
+        provider = 'linkedin'
+        email = user_id + '@linkedin.com'
+
+        return register_social_user(provider=provider, user_id=user_id, email=email, name=name)
+
+        
