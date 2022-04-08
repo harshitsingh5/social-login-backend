@@ -54,6 +54,8 @@ class LinkedinSocialAuthSerializer(serializers.Serializer):
     auth_token = serializers.CharField()
 
     def validate_auth_token(self, auth_token):
+        # access_token_data = Linkedin.validate(auth_token)
+        # return access_token_data
         access_token_data, profile_data = Linkedin.validate(auth_token)
         firstname = profile_data['firstName']['localized']['en_US']
         lastname = profile_data['lastName']['localized']['en_US']

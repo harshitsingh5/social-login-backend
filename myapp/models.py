@@ -31,7 +31,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-AUTH_PROVIDERS = {'facebook': 'facebook', 'linkedin': 'linkedin', 'email': 'email'}
+AUTH_PROVIDERS = {'facebook': 'facebook', 'google':'google', 'linkedin': 'linkedin', 'email': 'email'}
 
 
 class User(AbstractBaseUser):

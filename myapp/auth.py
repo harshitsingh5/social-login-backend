@@ -5,7 +5,7 @@ import os
 import random
 from rest_framework.exceptions import AuthenticationFailed
 import facebook
-from google.auth.transport import requests
+from google.auth.transport import requests as grequests
 from google.oauth2 import id_token
 import requests
 
@@ -24,7 +24,7 @@ class Google:
     @staticmethod
     def validate(auth_token):
         try:
-            idinfo = id_token.verify_oauth2_token(auth_token, requests.Request())
+            idinfo = id_token.verify_oauth2_token(auth_token, grequests.Request())
             if 'accounts.google.com' in idinfo['iss']:
                 return idinfo
         except:
@@ -33,26 +33,31 @@ class Google:
 class Linkedin:
     @staticmethod
     def validate(code):
-        # print('inside validate')
-        data = {
-            'grant_type':'authorization_code',
-            'code':code,
-            'client_id':'78xx67hewmxxlr',
-            'client_secret':'X6Ju6nl6q5a9UF05',
-            'redirect_uri':'https://localhost:3000/',
-        }
-        lnkd_verify_url = 'https://www.linkedin.com/oauth/v2/accessToken'
-        r = requests.post(lnkd_verify_url, data=data)
-        jsonified = r.json()
-        access_token = jsonified['access_token']
+        try:
+            # print('inside validate')
+            data = {
+                'grant_type':'authorization_code',
+                'code':code,
+                'client_id':'78xx67hewmxxlr',
+                'client_secret':'X6Ju6nl6q5a9UF05',
+                'redirect_uri':'https://localhost:3000/linkedin',
+            }
+            lnkd_verify_url = 'https://www.linkedin.com/oauth/v2/accessToken'
+            r = requests.post(lnkd_verify_url, data=data)
+            jsonified = r.json()
+            access_token = jsonified['access_token']
+            # print(jsonified)
+            # return jsonified
 
-        # fetching the profile data
-        prof_url = 'https://api.linkedin.com/v2/me'
-        # token_data = '\'TOK:' + access_token + "\'"
-        params = {'oauth2_access_token': access_token}
-        prof_data = requests.get(prof_url, params=params)
-        # print(prof_data.json())
-        return r.json(), prof_data.json()
+            #### fetching the profile data
+            ## token_data = '\'TOK:' + access_token + "\'"
+            prof_url = 'https://api.linkedin.com/v2/me'
+            params = {'oauth2_access_token': access_token}
+            prof_data = requests.get(prof_url, params=params)
+            ## print(prof_data.json())
+            return r.json(), prof_data.json()
+        except:
+            return "The token is either invalid or has expired"
 
 
 def generate_username(name):
